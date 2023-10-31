@@ -17,8 +17,9 @@ cmake ^
     -DCMAKE_LINKER=lld-link        ^
     -DCMAKE_NM=llvm-nm             ^
     -DCMAKE_VERBOSE_MAKEFILE=ON    ^
+    -DHiPACE_amrex_internal=OFF    ^
     -DHiPACE_openpmd_internal=OFF  ^
-    -DHiPACE_COMPUTE=NOACC         ^
+    -DHiPACE_COMPUTE=OMP           ^
     -DHiPACE_MPI=OFF
 if errorlevel 1 exit 1
 

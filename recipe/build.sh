@@ -20,7 +20,8 @@ cmake \
     -DCMAKE_VERBOSE_MAKEFILE=ON       \
     -DCMAKE_INSTALL_LIBDIR=lib        \
     -DCMAKE_INSTALL_PREFIX=${PREFIX}  \
-    -DHiPACE_COMPUTE=NOACC            \
+    -DHiPACE_COMPUTE=OMP              \
+    -DHiPACE_amrex_internal=OFF       \
     -DHiPACE_openpmd_internal=OFF     \
     -DHiPACE_MPI=OFF
 
