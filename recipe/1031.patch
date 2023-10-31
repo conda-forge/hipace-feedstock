@@ -1,0 +1,30 @@
+From 5ebc847c6525d1f04461d8bfe3d2a61766966b7d Mon Sep 17 00:00:00 2001
+From: Axel Huebl <axel.huebl@plasma.ninja>
+Date: Tue, 31 Oct 2023 09:58:00 -0700
+Subject: [PATCH] Fix External AMReX Builds
+
+- new AMReX 23.11+ installed CMake module paths for CMake scripts
+- `TINYP` is not really required for external packages and thus
+  should not fail if configured not to be used
+---
+ cmake/dependencies/AMReX.cmake | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
+
+diff --git a/cmake/dependencies/AMReX.cmake b/cmake/dependencies/AMReX.cmake
+index d5ff357c5..3ca4a92e8 100644
+--- a/cmake/dependencies/AMReX.cmake
++++ b/cmake/dependencies/AMReX.cmake
+@@ -143,7 +143,12 @@ macro(find_amrex)
+     else()
+         message(STATUS "Searching for pre-installed AMReX ...")
+         set(COMPONENT_PRECISION ${HiPACE_PRECISION} P${HiPACE_PRECISION})
+-        find_package(AMReX 21.08 CONFIG REQUIRED COMPONENTS 3D ${COMPONENT_PRECISION} PARTICLES TINYP)
++        find_package(AMReX 21.08 CONFIG REQUIRED COMPONENTS 3D ${COMPONENT_PRECISION} PARTICLES)
++        # note: TINYP skipped because user-configured and optional
++
++        # AMReX CMake helper scripts
++        list(APPEND CMAKE_MODULE_PATH "${AMReX_DIR}/AMReXCMakeModules")
++
+         message(STATUS "AMReX: Found version '${AMReX_VERSION}'")
+     endif()
+ endmacro()

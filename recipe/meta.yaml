@@ -8,43 +8,44 @@ package:
 source:
   url: https://github.com/Hi-PACE/hipace/archive/v{{ version }}.tar.gz
   sha256: 1c740c925294bacec2b7c27778339d71528a4bd1a81e051a9cc47e44b4cd0cdf
+  patches:
+    # Fix External AMReX & pyAMReX Builds
+    - 1031.patch
 
 build:
   # Prevent conda-build from deciding to build for each python version when hipace doesn't depend on python
   skip: true  # [py != 310]
-  number: 0
+  number: 1
 
 requirements:
   build:
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
-    - ccache        # [unix]
     - clang         # [win]
     - cmake
     - lld           # [win]
-    # TODO: add libxml2 dep in lld-feedstock
-    - libxml2       # [win]
     - make          # [unix]
     - ninja         # [win]
-    # TODO: later compile for -DHiPACE_COMPUTE=OMP
-    # - libgomp       # [linux]
-    # - llvm-openmp   # [osx or win]
+    - libgomp       # [linux]
+    - llvm-openmp   # [osx]
+    - intel-openmp  # [win]
     - pkgconfig
   host:
+    - amrex >={{ version }}
     - fftw =*=nompi_*
     - openpmd-api =*=nompi_*
 
 test:
   requires:
-    - bash  # [not win]
-    - python
-    - numpy
-    - openpmd-api =*=nompi_*
-    - openpmd-viewer
-    - pandas
-    - pytest
-    - python
-    - scipy
+    - bash    # [build_platform == target_platform and not win]
+    - python  # [build_platform == target_platform]
+    - numpy   # [build_platform == target_platform]
+    - openpmd-api =*=nompi_*  # [build_platform == target_platform]
+    - openpmd-viewer          # [build_platform == target_platform]
+    - pandas  # [build_platform == target_platform]
+    - pytest  # [build_platform == target_platform]
+    - python  # [build_platform == target_platform]
+    - scipy   # [build_platform == target_platform]
   source_files:
     - examples/
     - tests/
@@ -52,8 +53,8 @@ test:
     - test.sh   # [unix]
     - test.bat  # [win]
   commands:
-    - test -f ${PREFIX}/bin/hipace.NOMPI.NOACC.DP.LF  # [unix]
-    - if not exist %LIBRARY_PREFIX%\bin\hipace.NOMPI.NOACC.DP.LF.exe exit 1  # [win]
+    - test -f ${PREFIX}/bin/hipace.NOMPI.OMP.DP.LF  # [unix]
+    - if not exist %LIBRARY_PREFIX%\bin\hipace.NOMPI.OMP.DP.LF.exe exit 1  # [win]
     # smoke tests: execute
     - ./test.sh      # [unix and build_platform == target_platform]
     - call test.bat  # [win]
