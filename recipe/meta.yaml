@@ -1,5 +1,5 @@
 {% set name = "hipace" %}
-{% set version = "23.10" %}
+{% set version = "23.11" %}
 
 package:
   name: {{ name|lower }}
@@ -7,15 +7,12 @@ package:
 
 source:
   url: https://github.com/Hi-PACE/hipace/archive/v{{ version }}.tar.gz
-  sha256: 1c740c925294bacec2b7c27778339d71528a4bd1a81e051a9cc47e44b4cd0cdf
-  patches:
-    # Fix External AMReX & pyAMReX Builds
-    - 1031.patch
+  sha256: a8614fc9762d0385cb714c1f257a1b739937f51a09770497f303cc06e9e5014e
 
 build:
   # Prevent conda-build from deciding to build for each python version when hipace doesn't depend on python
   skip: true  # [py != 310]
-  number: 1
+  number: 0
 
 requirements:
   build:
