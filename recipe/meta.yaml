@@ -8,9 +8,6 @@ package:
 source:
   url: https://github.com/Hi-PACE/hipace/archive/v{{ version }}.tar.gz
   sha256: a8614fc9762d0385cb714c1f257a1b739937f51a09770497f303cc06e9e5014e
-  patches:
-    # Fix External AMReX & pyAMReX Builds
-    - 1031.patch
 
 build:
   # Prevent conda-build from deciding to build for each python version when hipace doesn't depend on python
