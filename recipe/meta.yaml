@@ -1,5 +1,5 @@
 {% set name = "hipace" %}
-{% set version = "24.06" %}
+{% set version = "24.08" %}
 
 package:
   name: {{ name|lower }}
@@ -7,7 +7,7 @@ package:
 
 source:
   url: https://github.com/Hi-PACE/hipace/archive/v{{ version }}.tar.gz
-  sha256: 5bb5143404e8f20c6a97b6c7d6cae2f4c54eb6d9f1537a7f1af7ad06be688d57
+  sha256: cd4106cbc510a11afae866f239ad11c6466d52dc2226f9c3c06d6957c1a9ca2a
 
 build:
   # Prevent conda-build from deciding to build for each python version when hipace doesn't depend on python
