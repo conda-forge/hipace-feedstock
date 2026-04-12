@@ -32,6 +32,7 @@ requirements:
     - amrex >={{ version }}
     - fftw =*=nompi_*
     - openpmd-api =*=nompi_*
+    - vir-simd
 
 test:
   requires:
