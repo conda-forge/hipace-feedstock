@@ -2,7 +2,7 @@
 
 set -eu -x -o pipefail
 
-export OMP_NUM_THREADS=2
+export OMP_NUM_THREADS=1
 export TEST_DIR=tests
 
 # executable
