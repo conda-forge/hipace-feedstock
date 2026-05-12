@@ -212,6 +212,3 @@ Feedstock Maintainers
 * [@SeverinDiederichs](https://github.com/SeverinDiederichs/)
 * [@ax3l](https://github.com/ax3l/)
 
-
-<!-- dummy commit to enable rerendering -->
-
