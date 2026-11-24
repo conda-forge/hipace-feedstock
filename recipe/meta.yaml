@@ -1,5 +1,5 @@
 {% set name = "hipace" %}
-{% set version = "26.05" %}
+{% set version = "26.11" %}
 
 package:
   name: {{ name|lower }}
@@ -7,12 +7,16 @@ package:
 
 source:
   url: https://github.com/Hi-PACE/hipace/archive/v{{ version }}.tar.gz
-  sha256: 6485ad5d37c414474e8c6580615e0f52da0da08f6dad4df9442dc815336fde62
+  sha256: bb0369700513d6a7d67a26045907690b28098e03fe9663d9e4d297846bc3d0fa
 
 build:
-  # Prevent conda-build from deciding to build for each python version when hipace doesn't depend on python
-  skip: true  # [py != 310]
   number: 0
+  # hipace does not depend on python or numpy at build or run time; they are
+  # only used in test.requires. Without this, conda-build treats them as
+  # variant keys and creates one identical build per python/numpy version.
+  force_ignore_keys:
+    - numpy
+    - python
 
 requirements:
   build:
@@ -30,20 +34,25 @@ requirements:
     - pkgconfig
   host:
     - amrex >={{ version }}
-    - fftw =*=nompi_*
-    - openpmd-api =*=nompi_*
+    - fftw * nompi_*
+    - openpmd-api * nompi_*
     - vir-simd
+    # HDF5 2.1.0's CMake config (pulled in via openPMD-api) unconditionally
+    # calls find_dependency(ZLIB), but the hdf5 package only depends on
+    # libzlib (no headers). ppc64le is stuck on hdf5 2.1.0 since
+    # hdf5-feedstock dropped that platform (conda-forge/hdf5-feedstock#300).
+    # HDF5 2.2.0+ only requires ZLIB for static builds.
+    - zlib
 
 test:
   requires:
     - bash    # [build_platform == target_platform and not win]
     - python  # [build_platform == target_platform]
     - numpy   # [build_platform == target_platform]
-    - openpmd-api =*=nompi_*  # [build_platform == target_platform]
+    - openpmd-api * nompi_*  # [build_platform == target_platform]
     - openpmd-viewer          # [build_platform == target_platform]
     - pandas  # [build_platform == target_platform]
     - pytest  # [build_platform == target_platform]
-    - python  # [build_platform == target_platform]
     - scipy   # [build_platform == target_platform]
   source_files:
     - examples/
