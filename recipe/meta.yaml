@@ -37,6 +37,12 @@ requirements:
     - fftw * nompi_*
     - openpmd-api * nompi_*
     - vir-simd
+    # HDF5 2.1.0's CMake config (pulled in via openPMD-api) unconditionally
+    # calls find_dependency(ZLIB), but the hdf5 package only depends on
+    # libzlib (no headers). ppc64le is stuck on hdf5 2.1.0 since
+    # hdf5-feedstock dropped that platform (conda-forge/hdf5-feedstock#300).
+    # HDF5 2.2.0+ only requires ZLIB for static builds.
+    - zlib
 
 test:
   requires:
