@@ -14,3 +14,5 @@ cxx_compiler_version:
 - '2022'
 target_platform:
 - win-64
+zlib:
+- '1'
